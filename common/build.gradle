@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def ext = rootProject.ext
+android {
+    def version = ext.android
+    compileSdkVersion version['compileSdkVersion']
+    buildToolsVersion version['buildToolsVersion']
+    defaultConfig {
+        minSdkVersion version['minSdkVersion']
+        targetSdkVersion version['targetSdkVersion']
+        versionCode version['versionCode']
+        versionName version['versionName']
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+
+}
+
+dependencies {
+    def dependencies = ext.dependencies
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    api dependencies["kotlin-stdlib"]
+    api dependencies["appcompat"]
+    api dependencies["core-ktx"]
+    api dependencies["constraintlayout"]
+    api dependencies["material"]
+    api dependencies["annotation"]
+    api dependencies["lifecycle-extensions"]
+    api dependencies["legacy-support-v4"]
+    api dependencies["glide"]
+    annotationProcessor dependencies["glide-compiler"]
+
+    api dependencies["okgo"]
+    api dependencies["gson"]
+    api dependencies["banner"]
+    api dependencies["refresh-layout"]
+    api dependencies["refresh-header-classics"]
+    api dependencies["refresh-footer-classics"]
+    api dependencies["BRVAH"]
+    api project(path: ':ninegridview')
+}
