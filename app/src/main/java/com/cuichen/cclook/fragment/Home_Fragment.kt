@@ -52,24 +52,24 @@ class Home_Fragment : BaseFragment() {
 
     var pageNumber = 0
     override fun initData() {
-      loadData(0)
-        okGet(okUrl.BANNER , null , "Banner")
+      loadData(0 , true)
+        okGet(okUrl.BANNER , null , "Banner" , false)
     }
 
     // 0是刷新 ， 1是加载
-    fun loadData(isRefresh : Int){
-        okGet(okUrl.ARTICLE_LIST +"/$pageNumber/json", null , "ARTICLE_LIST$isRefresh")
+    fun loadData(isRefresh : Int , dialog : Boolean){
+        okGet(okUrl.ARTICLE_LIST +"/$pageNumber/json", null , "ARTICLE_LIST$isRefresh" , dialog)
     }
 
     override fun initListener() {
         refreshLayout.setOnRefreshListener {
             pageNumber = 0
-            loadData(0)
+            loadData(0 , true)
         }
 
         refreshLayout.setOnLoadMoreListener {
             pageNumber++
-            loadData(1)
+            loadData(1 , false)
         }
 
 

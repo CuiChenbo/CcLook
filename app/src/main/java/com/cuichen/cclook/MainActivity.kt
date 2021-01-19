@@ -17,12 +17,12 @@ class MainActivity : BaseActivity(){
         return R.layout.activity_main
     }
 
-    val tabs = listOf("开始","段子","妹纸","我")
+    val tabs = listOf("学点","段子","妹纸","我")
     override fun initView() {
         for(tab in tabs){
             var bottomBarView = BottomBarView(mConetxt)
             val tv = bottomBarView.textView
-            tv.textSize = 16f
+            tv.textSize = 14f
             tv.typeface = Typeface.DEFAULT_BOLD
             tv.text = tab
             navi.addItem(bottomBarView)

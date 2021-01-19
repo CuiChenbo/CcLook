@@ -14,4 +14,10 @@
         <item name="android:layout_height">@dimen/px1</item>
     </style>
 
+    <style name="Line_e0e0e0_Horizontal_5dp">
+        <item name="android:background">@color/defaultBackground</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp5</item>
+    </style>
+
 </resources>

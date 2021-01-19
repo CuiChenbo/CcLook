@@ -42,11 +42,11 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_424242"
+                android:textColor="@color/color_4d4d4d"
                 android:maxLines="1"
                 android:layout_marginLeft="@dimen/dp8"
                 android:ellipsize="end"
-                android:textSize="16dp"
+                android:textSize="12dp"
                 />
       </LinearLayout>
 <!--用户发表的内容和图片-->
@@ -60,11 +60,11 @@
              android:id="@+id/content"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:textColor="@color/color_302f30"
+             android:textColor="@color/color222"
              android:lineSpacingExtra="@dimen/dp3"
              android:maxLines="15"
              android:ellipsize="end"
-             android:textSize="15dp"
+             android:textSize="16dp"
              tools:text="xxxx"
              />
          <com.lzy.ninegrid.NineGridView
@@ -79,7 +79,7 @@
       </LinearLayout>
    </LinearLayout>
       <View
-        style="@style/Line_e0e0e0_Horizontal"
+        style="@style/Line_e0e0e0_Horizontal_5dp"
           />
    </LinearLayout>
 </RelativeLayout>

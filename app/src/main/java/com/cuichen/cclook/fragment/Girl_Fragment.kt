@@ -4,6 +4,7 @@ package com.cuichen.cclook.fragment
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -37,31 +38,32 @@ class Girl_Fragment : BaseFragment() {
     lateinit var headView : View
     lateinit var banner: Banner<HomeBannerBean.DataBean, BannerImageAdapter<HomeBannerBean.DataBean>>
     override fun initView() {
-        val rlm = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val rlm = StaggeredGridLayoutManager(2 , StaggeredGridLayoutManager.VERTICAL)
         rv.layoutManager = (rlm)
         mAdapter = GirlAdapter(R.layout.item_girl_l)
         rv.adapter = mAdapter
 
-        headView = LayoutInflater.from(activity).inflate(R.layout.banner_home , null, false)
-        banner = headView.findViewById(R.id.banner)
-        mAdapter.addHeaderView(headView)
+//        headView = LayoutInflater.from(activity).inflate(R.layout.banner_home , null, false)
+//        banner = headView.findViewById(R.id.banner)
+//        mAdapter.headerViewAsFlow = true
+//        mAdapter.addHeaderView(headView)
     }
 
     var page = 1
     override fun initData() {
-        okGet(okUrl.GIRL_BANNER, null , "banner")
-        loadData()
+//        okGet(okUrl.GIRL_BANNER, null , "banner")
+        loadData(true)
     }
 
-    fun loadData(){
-        okGet(okUrl.Girl + "page/$page/count/16", null , "girl")
+    fun loadData(dialog : Boolean){
+        okGet(okUrl.Girl + "page/$page/count/16", null , "girl" , dialog)
     }
 
     override fun initListener() {
         refreshLayout.setOnRefreshListener { page = 1
             initData()}
         refreshLayout.setOnLoadMoreListener { page++
-        loadData()}
+        loadData(false)}
     }
 
     override fun OkonSuccess(body: String, tag: Any) {
@@ -90,8 +92,8 @@ class Girl_Fragment : BaseFragment() {
                 return
             }
         }else if (tag == "banner"){
-            val datas: HomeBannerBean = Gson().fromJson(body, HomeBannerBean::class.java)
-            setBanner(datas.data)
+//            val datas: HomeBannerBean = Gson().fromJson(body, HomeBannerBean::class.java)
+//            setBanner(datas.data)
         }
 
     }

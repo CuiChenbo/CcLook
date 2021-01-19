@@ -29,25 +29,25 @@ class ImgFragment : BaseCacheFragment() {
         rv.adapter = mAdapter
     }
     override fun initData() {
-        loadData()
+        loadData(true)
     }
 
     var page = 1
-    private fun loadData() {
+    private fun loadData(dialog : Boolean) {
         val params = HttpParams()
         params.put("page", page)
         params.put("count", 12)
-        okGet(okUrl.QiuBaiImgUrl,  params ,"IMG")
+        okGet(okUrl.QiuBaiImgUrl,  params ,"IMG" , dialog)
     }
 
     override fun initListener() {
       refreshLayout.setOnRefreshListener {
           page =1
-          loadData()
+          loadData(true)
       }
         refreshLayout.setOnLoadMoreListener {
             page++
-            loadData()
+            loadData(false)
         }
     }
 

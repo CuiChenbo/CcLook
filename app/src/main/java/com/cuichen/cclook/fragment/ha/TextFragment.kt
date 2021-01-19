@@ -29,25 +29,25 @@ class TextFragment : BaseCacheFragment() {
         rv.adapter = mAdapter
     }
     override fun initData() {
-        loadData()
+        loadData(true)
     }
 
     var page = 1
-    fun loadData() {
+    fun loadData(dialog : Boolean) {
         val params = HttpParams()
         params.put("type", "text")
         params.put("page", page)
         params.put("count", 16)
-        okGet( okUrl.QiuBaiTextUrl, params , "T")
+        okGet( okUrl.QiuBaiTextUrl, params , "T" , dialog)
     }
     override fun initListener() {
         refreshLayout.setOnRefreshListener {
             page =1
-            loadData()
+            loadData(true)
         }
         refreshLayout.setOnLoadMoreListener {
             page ++
-            loadData()
+            loadData(false)
         }
     }
 

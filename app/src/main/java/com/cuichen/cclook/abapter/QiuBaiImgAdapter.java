@@ -24,10 +24,10 @@ public class QiuBaiImgAdapter extends BaseQuickAdapter<QiuBaiImgBean.ItemsBean, 
             ImageView iv = helper.getView(R.id.icon);
             if (item.getUser() != null){
                 helper.setText(R.id.title,item.getUser().getLogin());
-                GlideImageUtils.display(getContext() , item.getUser().getThumb() , iv);
+                GlideImageUtils.DisplayCircle(getContext() , item.getUser().getThumb() , iv);
             }else {
                 helper.setText(R.id.title,"未命名");
-                GlideImageUtils.display(getContext() ,R.mipmap.ic_launcher , iv);
+                GlideImageUtils.DisplayCircle(getContext() ,R.mipmap.ic_launcher , iv);
             }
             helper.setText(R.id.content,item.getContent());
            NineGridView nineGrid = helper.getView(R.id.nineGrid);

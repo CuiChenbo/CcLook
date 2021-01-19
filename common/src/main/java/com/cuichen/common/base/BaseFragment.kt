@@ -53,6 +53,10 @@ abstract class BaseFragment : Fragment() {
     }
 
     fun okPost(url : String  , params : HttpParams , tag : Any){
+        okPost(url, params, tag , false)
+    }
+
+    fun okPost(url : String  , params : HttpParams , tag : Any , dialog : Boolean){
         OkGo.post<String>(url)
             .params(params)
             .tag(tag)
@@ -67,7 +71,7 @@ abstract class BaseFragment : Fragment() {
 
                 override fun onStart(request: Request<String, out Request<Any, Request<*, *>>>?) {
                     super.onStart(request)
-                    setLoadingShow(true)
+                    if (dialog)setLoadingShow(true)
                 }
 
                 override fun onFinish() {
@@ -77,8 +81,10 @@ abstract class BaseFragment : Fragment() {
             })
     }
 
-
     fun okGet(url: String, params: HttpParams?, tag: Any){
+        okGet(url, params, tag , false)
+    }
+    fun okGet(url: String, params: HttpParams?, tag: Any , dialog: Boolean){
         OkGo.get<String>(url)
             .params(params)
             .tag(tag)
@@ -94,7 +100,7 @@ abstract class BaseFragment : Fragment() {
 
                 override fun onStart(request: Request<String, out Request<Any, Request<*, *>>>?) {
                     super.onStart(request)
-                    setLoadingShow(true)
+                    if (dialog)setLoadingShow(true)
                 }
 
                 override fun onFinish() {
