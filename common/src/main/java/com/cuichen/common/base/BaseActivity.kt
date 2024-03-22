@@ -63,11 +63,7 @@ abstract class BaseActivity : AppCompatActivity() {
             .tag(tag)
             .execute(object : StringCallback() {
                 override fun onSuccess(response: Response<String>?) {
-                    OkonSuccess(response!!.body() , tag)
-                }
-
-                override fun onError(response: Response<String>?) {
-                    super.onError(response)
+                    response?.body()?.let { OkonSuccess(it, tag) }
                 }
 
                 override fun onStart(request: Request<String, out Request<Any, Request<*, *>>>?) {
@@ -108,5 +104,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun OkonSuccess(body : String, tag : Any){
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        OkGo.cancelTag(null,this)
     }
 }

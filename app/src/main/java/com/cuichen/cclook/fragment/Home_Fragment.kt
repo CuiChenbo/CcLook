@@ -87,7 +87,7 @@ class Home_Fragment : BaseFragment() {
             refreshLayout.finishLoadMore()
         }else if (tag == "Banner"){
             var homeBannerBean = GsonUtils.fromJson(body , HomeBannerBean::class.java)
-             setBanner(homeBannerBean.data)
+            homeBannerBean.data?.let { setBanner(it) }
         }
     }
 
