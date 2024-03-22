@@ -44,8 +44,8 @@ class LoginActivity : BaseActivity() {
        if (tag == this){
           var result = GsonUtils.fromJson(body , LoginBean::class.java)
            if (result.errorCode == 0) {
-               BaseApplication.get().usreInfo = result.data?:UserInfoBean()
-               PreferenceUtils.put(BaseConst.USER_INFO_SP , result.data.toString())
+               BaseApplication.get().userInfo = result.data?:UserInfoBean()
+               PreferenceUtils.put(BaseConst.USER_INFO_SP , GsonUtils.toJson(result.data))
                EventBus.getDefault().post(LoginState(true))
                finish()
            } else

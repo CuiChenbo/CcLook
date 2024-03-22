@@ -43,7 +43,7 @@ class My_Fragment : BaseFragment() {
     }
 
    fun setUserInfo(){
-       val ui = BaseApplication.get().usreInfo
+       val ui = BaseApplication.get().userInfo
         tv_name.setText(ui.nickname)
        tv_lev.setText("积分${ui.coinCount}")
     }
@@ -70,7 +70,7 @@ class My_Fragment : BaseFragment() {
         if(tag == okUrl.LOGOUT){
             val result = GsonUtils.fromJson(body , ResultBean::class.java)
             if(result.errorCode == 0){
-                BaseApplication.get().usreInfo = UserInfoBean()
+                BaseApplication.get().userInfo = UserInfoBean()
                 HttpUtils.saveCookies("")
                 BaseApplication.get().okGoCookieHeader("")
                 PreferenceUtils.put(BaseConst.USER_INFO_SP , "")

@@ -7,6 +7,7 @@ import com.cuichen.common.bean.user.UserInfoBean
 import com.cuichen.common.http.HeadresInterceptor
 import com.cuichen.common.http.HttpUtils
 import com.cuichen.common.http.SaveCookieInterceptor
+import com.cuichen.common.utils.GsonUtils
 import com.cuichen.common.utils.NineImageLoader
 import com.cuichen.common.utils.PreferenceUtils
 import com.lzy.ninegrid.NineGridView
@@ -37,7 +38,7 @@ class BaseApplication : Application() {
         }
     }
 
-    var usreInfo = UserInfoBean()
+    var userInfo = UserInfoBean()
 
     override fun onCreate() {
         super.onCreate()
@@ -50,9 +51,23 @@ class BaseApplication : Application() {
                 okGoCookieHeader(cookie)
             }
         }
+        initUserInfo()
+
 
         setSmartRefreshLayout()
         NineGridView.setImageLoader(NineImageLoader())
+    }
+
+    fun initUserInfo(){
+       var u = PreferenceUtils.get(BaseConst.USER_INFO_SP)
+        if (!TextUtils.isEmpty(u)){
+            try {
+                userInfo = GsonUtils.fromJson(u , UserInfoBean::class.java)
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
+
+        }
     }
 
     fun okGoCookieHeader(cookie : String){
