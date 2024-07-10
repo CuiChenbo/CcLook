@@ -16,6 +16,10 @@ import com.cuichen.cclook.R
 import com.cuichen.cclook.abapter.HomeArticleAdapter
 import com.cuichen.cclook.bean.HomeArticleBean
 import com.cuichen.cclook.bean.HomeBannerBean
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.callback.StringCallback
+import com.lzy.okgo.model.Response
+import com.lzy.okgo.request.base.Request
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -52,44 +56,52 @@ class Home_Fragment : BaseFragment() {
 
     var pageNumber = 0
     override fun initData() {
-      loadData(0 , true)
-        okGet(okUrl.BANNER , null , "Banner" , false)
+      loadData(true)
+
+        OkGo.get<String>(okUrl.BANNER )
+            .execute(object : StringCallback() {
+                override fun onSuccess(response: Response<String>) {
+                    val homeBannerBean = GsonUtils.fromJson(response.body() , HomeBannerBean::class.java)
+                    homeBannerBean.data?.let { setBanner(it) }
+                }
+
+            })
     }
 
     // 0是刷新 ， 1是加载
-    fun loadData(isRefresh : Int , dialog : Boolean){
-        okGet(okUrl.ARTICLE_LIST +"/$pageNumber/json", null , "ARTICLE_LIST$isRefresh" , dialog)
+    fun loadData(isRefresh : Boolean){
+        OkGo.get<String>(okUrl.ARTICLE_LIST +"/$pageNumber/json")
+            .execute(object : StringCallback() {
+                override fun onSuccess(response: Response<String>) {
+                    if (isRefresh){
+                        var homeArticleBean = GsonUtils.fromJson(response.body() , HomeArticleBean::class.java)
+                        mArticleAdapter.setNewInstance(homeArticleBean.data.datas)
+                        refreshLayout.finishRefresh()
+                    }else {
+                        var homeArticleBean = GsonUtils.fromJson(response.body() , HomeArticleBean::class.java)
+                        mArticleAdapter.addData(homeArticleBean.data.datas)
+                        refreshLayout.finishLoadMore()
+                    }
+                }
+
+            })
+
     }
 
     override fun initListener() {
         refreshLayout.setOnRefreshListener {
             pageNumber = 0
-            loadData(0 , true)
+            loadData( true)
         }
 
         refreshLayout.setOnLoadMoreListener {
             pageNumber++
-            loadData(1 , false)
+            loadData(false)
         }
 
 
     }
 
-    override fun OkonSuccess(body: String, tag: Any) {
-        super.OkonSuccess(body, tag)
-        if (tag == "ARTICLE_LIST0"){
-            var homeArticleBean = GsonUtils.fromJson(body , HomeArticleBean::class.java)
-            mArticleAdapter.setNewInstance(homeArticleBean.data.datas)
-            refreshLayout.finishRefresh()
-        }else if (tag == "ARTICLE_LIST1"){
-            var homeArticleBean = GsonUtils.fromJson(body , HomeArticleBean::class.java)
-            mArticleAdapter.addData(homeArticleBean.data.datas)
-            refreshLayout.finishLoadMore()
-        }else if (tag == "Banner"){
-            var homeBannerBean = GsonUtils.fromJson(body , HomeBannerBean::class.java)
-            homeBannerBean.data?.let { setBanner(it) }
-        }
-    }
 
 
     fun setBanner(datas : List<HomeBannerBean.DataBean>){

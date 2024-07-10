@@ -34,11 +34,7 @@ class TextFragment : BaseCacheFragment() {
 
     var page = 1
     fun loadData(dialog : Boolean) {
-        val params = HttpParams()
-        params.put("type", "text")
-        params.put("page", page)
-        params.put("count", 16)
-        okGet( okUrl.QiuBaiTextUrl, params , "T" , dialog)
+
     }
     override fun initListener() {
         refreshLayout.setOnRefreshListener {
@@ -49,32 +45,5 @@ class TextFragment : BaseCacheFragment() {
             page ++
             loadData(false)
         }
-    }
-
-    override fun OkonSuccess(body: String, tag: Any) {
-        super.OkonSuccess(body, tag)
-        if (tag != "T") return
-        refreshLayout.finishRefresh(true)
-        refreshLayout.finishLoadMore(true)
-        try {
-            val datas: QiuBaiBean = GsonUtils.fromJson(body, QiuBaiBean::class.java)
-            if (datas.getItems() != null && datas.getItems().size > 0) {
-                mAdapter.addData(datas.getItems())
-            }
-        } catch (e: Exception) {
-            e.fillInStackTrace()
-           refreshLayout.finishRefresh(false)
-           refreshLayout.finishLoadMore(false)
-        }
-    }
-
-    override fun OkonError(response: Response<String>?) {
-        super.OkonError(response)
-        refreshLayout.finishRefresh(false)
-        refreshLayout.finishLoadMore(false)
-        val tv = TextView(activity)
-        tv.gravity = Gravity.CENTER
-        tv.text = "卧槽,加载失败了"
-        mAdapter.setEmptyView(tv)
     }
 }

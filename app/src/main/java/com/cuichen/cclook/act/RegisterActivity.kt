@@ -6,7 +6,10 @@ import com.cuichen.common.http.okUrl
 import com.cuichen.common.utils.GsonUtils
 import com.cuichen.common.utils.TU
 import com.cuichen.cclook.R
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.callback.StringCallback
 import com.lzy.okgo.model.HttpParams
+import com.lzy.okgo.model.Response
 import kotlinx.android.synthetic.main.activity_register.*
 
 
@@ -28,7 +31,18 @@ class RegisterActivity : BaseActivity() {
             pa.put("username" ,username.text.toString() )
             pa.put("password" ,password.text.toString() )
             pa.put("repassword" ,password2.text.toString() )
-            okPost(okUrl.REGISTER , pa , this)
+            OkGo.post<String>(okUrl.REGISTER)
+                .params(pa)
+                .execute(object : StringCallback() {
+                    override fun onSuccess(response: Response<String>?) {
+                        response?.body()?.let { OkonSuccess(it) }
+                    }
+
+                    override fun onFinish() {
+                        super.onFinish()
+                        setLoadingShow(false)
+                    }
+                })
         }
     }
 
@@ -45,14 +59,13 @@ class RegisterActivity : BaseActivity() {
 //    I/OkGo:
 //    I/OkGo: 	body:{"data":{"admin":false,"chapterTops":[],"coinCount":0,"collectIds":[],"email":"","icon":"","id":159807,"nickname":"CCB1","password":"","publicName":"CCB1","token":"","type":0,"username":"CCB1"},"errorCode":0,"errorMsg":""}
 
-   override fun OkonSuccess(body : String, tag : Any){
-       if (tag == this) {
+   fun OkonSuccess(body : String){
            var result = GsonUtils.fromJson(body, ResultBean::class.java)
            if (result.errorCode == 0) {
                finish()
            } else
                TU.showToast(result.errorMsg)
        }
-       }
+
 
 }

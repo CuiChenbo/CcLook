@@ -44,7 +44,7 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun initData()
     abstract fun initListener()
     protected fun isTranslucent() : Boolean{
-        return true
+        return false
     }
 
 
@@ -58,53 +58,9 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun okPost(url : String  , params : HttpParams , tag : Any){
-        OkGo.post<String>(url)
-            .params(params)
-            .tag(tag)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>?) {
-                    response?.body()?.let { OkonSuccess(it, tag) }
-                }
-
-                override fun onStart(request: Request<String, out Request<Any, Request<*, *>>>?) {
-                    super.onStart(request)
-                    setLoadingShow(true)
-                }
-
-                override fun onFinish() {
-                    super.onFinish()
-                    setLoadingShow(false)
-                }
-            })
-    }
-
-
-    fun okGet(url: String, params: HttpParams?, tag: Any){
-        OkGo.get<String>(url)
-            .params(params)
-            .tag(tag)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>?) {
-
-                }
-
-                override fun onError(response: Response<String>?) {
-                    super.onError(response)
-                }
-
-                override fun onStart(request: Request<String, out Request<Any, Request<*, *>>>?) {
-                    super.onStart(request)
-                }
-
-                override fun onFinish() {
-                    super.onFinish()
-                }
-            })
-    }
-
-    open fun OkonSuccess(body : String, tag : Any){
 
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

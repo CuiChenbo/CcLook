@@ -34,10 +34,7 @@ class ImgFragment : BaseCacheFragment() {
 
     var page = 1
     private fun loadData(dialog : Boolean) {
-        val params = HttpParams()
-        params.put("page", page)
-        params.put("count", 12)
-        okGet(okUrl.QiuBaiImgUrl,  params ,"IMG" , dialog)
+
     }
 
     override fun initListener() {
@@ -49,33 +46,5 @@ class ImgFragment : BaseCacheFragment() {
             page++
             loadData(false)
         }
-    }
-
-
-    override fun OkonSuccess(body: String, t: Any) {
-        if (t != "IMG") return
-        try {
-            refreshLayout.finishLoadMore()
-            refreshLayout.finishRefresh()
-            val datas: QiuBaiImgBean = GsonUtils.fromJson(body, QiuBaiImgBean::class.java)
-            if (datas.getItems() != null || datas.getItems().size != 0) {
-                if (page == 1){
-                    mAdapter.setNewInstance(datas.items)
-                }else {
-                    mAdapter.addData(datas.getItems())
-                }
-            }
-        } catch (e: Exception) {
-            refreshLayout.finishLoadMore(false)
-            refreshLayout.finishRefresh(false)
-        }
-    }
-
-    override fun OkonError(response: Response<String>?) {
-        super.OkonError(response)
-        val tv = TextView(activity)
-        tv.gravity = Gravity.CENTER
-        tv.text = "卧槽,加载失败了"
-        mAdapter.setEmptyView(tv)
     }
 }

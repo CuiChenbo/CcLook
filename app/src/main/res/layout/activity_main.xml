@@ -9,6 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_alignParentBottom="true"
+            android:background="@color/colorWhite"
             android:id="@+id/navi"
     >
     </com.cuichen.common.view.BottomBar.BottomBarLayout>
@@ -16,6 +17,7 @@
     <FrameLayout android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  android:layout_above="@id/navi"
+                 android:background="#f9f9f9"
                  android:id="@+id/fl"
     ></FrameLayout>
 </RelativeLayout>

@@ -1,26 +1,30 @@
-package com.cuichen.common.utils;
+package com.cuichen.common.utils
 
-import com.google.gson.Gson;
+import com.cuichen.common.bean.ResultBean
+import com.google.gson.Gson
 
-public class GsonUtils {
+object GsonUtils {
+    @Volatile
+    private var gson: Gson? = null
 
-    private volatile static Gson gson;
-
-    static {
-        if (gson == null)
-            gson = new Gson();
+    init {
+        if (gson == null) gson = Gson()
     }
 
-    public static <T> T fromJson(String json , Class<T> clazz){
-        synchronized (GsonUtils.class){
-            return gson.fromJson(json , clazz);
+    fun <T> fromJson(json: String?, clazz: Class<T>?): T {
+        synchronized(GsonUtils::class.java) {
+            try {
+                return gson!!.fromJson(json, clazz)
+            } catch (e: Exception) {
+                e.fillInStackTrace()
+                return ResultBean<T>() as T
+            }
         }
     }
 
-    public static String toJson(Object object){
-        synchronized (GsonUtils.class){
-            return gson.toJson(object);
+    fun toJson(`object`: Any?): String {
+        synchronized(GsonUtils::class.java) {
+            return gson!!.toJson(`object`)
         }
     }
-
 }

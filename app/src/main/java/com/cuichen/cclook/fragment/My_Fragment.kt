@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import com.cuichen.common.base.BaseFragment
 import com.cuichen.cclook.R
 import com.cuichen.cclook.act.LoginActivity
+import com.cuichen.cclook.mvp.MyPresenter
+import com.cuichen.cclook.mvp.MyView
 import com.cuichen.common.base.BaseApplication
 import com.cuichen.common.base.BaseConst
 import com.cuichen.common.bean.ResultBean
@@ -25,16 +27,18 @@ import org.greenrobot.eventbus.ThreadMode
  * CCB simple [Fragment] subclass.
  *
  */
-class My_Fragment : BaseFragment() {
+class My_Fragment : BaseFragment() , MyView{
 
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_my_
     }
 
+    val mp = MyPresenter()
+
     override fun initView() {
         EventBus.getDefault().register(this)
-
+        mp.attach(this)
     }
 
     override fun initData() {
@@ -53,10 +57,10 @@ class My_Fragment : BaseFragment() {
             startAct(LoginActivity::class.java)
         }
         iv_msg.setOnClickListener{
-            okGet(okUrl.COLLECT_LIST , null , this)
+
         }
         tv_outLogin.setOnClickListener {
-            okGet(okUrl.LOGOUT , null,okUrl.LOGOUT ,true)
+           mp.goLogout()
         }
     }
 
@@ -65,28 +69,27 @@ class My_Fragment : BaseFragment() {
       setUserInfo()
     }
 
-    override fun OkonSuccess(body: String, tag: Any) {
-        super.OkonSuccess(body, tag)
-        if(tag == okUrl.LOGOUT){
-            val result = GsonUtils.fromJson(body , ResultBean::class.java)
-            if(result.errorCode == 0){
-                BaseApplication.get().userInfo = UserInfoBean()
-                HttpUtils.saveCookies("")
-                BaseApplication.get().okGoCookieHeader("")
-                PreferenceUtils.put(BaseConst.USER_INFO_SP , "")
-                EventBus.getDefault().post(LoginState(false))
-            }
-        }
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
-        OkGo.cancelTag(null,okUrl.LOGOUT)
+        mp.detach()
     }
 
+    override fun onResult(result: String?) {
 
+    }
+
+    override fun showLoadView() {
+        setLoadingShow(true)
+    }
+
+    override fun dismissLoadView() {
+        setLoadingShow(false)
+    }
+
+    override fun showLoadErrorView() {
+    }
 
 
 }

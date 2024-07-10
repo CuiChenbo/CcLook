@@ -25,9 +25,6 @@ class Ha_Fragment : BaseFragment() {
     }
 
     override fun initView() {
-//        for (s in tabs){
-//            tabLayout.addTab(tabLayout.newTab().setText(s))
-//        }
         tabLayout.setupWithViewPager(vp)
         vp.adapter = FragAdapter(childFragmentManager)
     }

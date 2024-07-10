@@ -6,12 +6,9 @@ def ext = rootProject.ext
 android {
     def version = ext.android
     compileSdkVersion version['compileSdkVersion']
-    buildToolsVersion version['buildToolsVersion']
     defaultConfig {
         minSdkVersion version['minSdkVersion']
         targetSdkVersion version['targetSdkVersion']
-        versionCode version['versionCode']
-        versionName version['versionName']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
